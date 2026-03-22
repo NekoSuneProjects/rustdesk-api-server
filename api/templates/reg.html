@@ -1,7 +1,9 @@
 {% load static %}
+{% load i18n %}
 {% load my_filters %}
 <!DOCTYPE html>
-<html lang="en">
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="renderer" content="webkit">
@@ -13,6 +15,19 @@
     <link rel="icon" href="../frame/static/image/code.png">
 </head>
 <body>
+<div style="padding: 16px 24px 0; text-align: right;">
+    <a href="/api/set_language?lang=en&next={{ request.get_full_path|urlencode }}">English</a>
+    |
+    <a href="/api/set_language?lang=es&next={{ request.get_full_path|urlencode }}">Español</a>
+    |
+    <a href="/api/set_language?lang=fr&next={{ request.get_full_path|urlencode }}">Français</a>
+    |
+    <a href="/api/set_language?lang=de&next={{ request.get_full_path|urlencode }}">Deutsch</a>
+    |
+    <a href="/api/set_language?lang=nl&next={{ request.get_full_path|urlencode }}">Nederlands</a>
+    |
+    <a href="/api/set_language?lang=zh-hans&next={{ request.get_full_path|urlencode }}">中文</a>
+</div>
  
 <div class="login-main">
     <header class="layui-elip" style="width: 82%">{{ "注册页" | translate }}</header>

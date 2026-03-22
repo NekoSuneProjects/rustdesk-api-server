@@ -11,6 +11,8 @@ from django.forms.models import model_to_dict
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.conf import settings
+from django.utils import translation
+from django.utils.http import url_has_allowed_host_and_scheme
 
 from itertools import chain
 from django.db.models.fields import DateTimeField, DateField, CharField, TextField
@@ -113,6 +115,27 @@ def index(request):
     if request.user and request.user.username != 'AnonymousUser':
         return HttpResponseRedirect('/api/work')
     return HttpResponseRedirect('/api/user_action?action=login')
+
+
+def set_language(request):
+    lang = request.GET.get('lang') or request.POST.get('lang') or settings.LANGUAGE_CODE
+    next_url = request.GET.get('next') or request.POST.get('next') or request.META.get('HTTP_REFERER') or '/'
+    allowed_languages = {code for code, _ in settings.LANGUAGES}
+
+    if lang not in allowed_languages:
+        lang = settings.LANGUAGE_CODE
+
+    if not url_has_allowed_host_and_scheme(
+        url=next_url,
+        allowed_hosts={request.get_host()},
+        require_https=request.is_secure(),
+    ):
+        next_url = '/'
+
+    response = HttpResponseRedirect(next_url)
+    translation.activate(lang)
+    response.set_cookie(settings.LANGUAGE_COOKIE_NAME, lang, samesite='Lax')
+    return response
 
 
 def user_action(request):

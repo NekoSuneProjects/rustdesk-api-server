@@ -9,6 +9,7 @@ from api import views
 urlpatterns = [
     url(r'^login',views.login),
     url(r'^logout',views.logout),
+    url(r'^set_language$',views.set_language),
     url(r'^ab$',views.ab),
     url(r'^ab\/get',views.ab_get), # 兼容 x86-sciter 版客户端
     url(r'^users',views.users),

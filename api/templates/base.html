@@ -1,7 +1,8 @@
 {% load static %}
 {% load i18n %}
 <!DOCTYPE html>
-<html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
 
 <head>
     <meta charset="utf-8">
@@ -47,6 +48,17 @@
         <li class="layui-nav-item"><a href="/admin" target="_blank">{% trans "管理后台" %}</a></li>
         {% endif %}
         <li class="layui-nav-item"><a href="/api/user_action?action=logout" target="_blank">{% trans "退出" %}</a></li>
+        <li class="layui-nav-item">
+            <a href="javascript:;">{% get_current_language as LANGUAGE_CODE %}{% if LANGUAGE_CODE == 'en' %}English{% elif LANGUAGE_CODE == 'es' %}Español{% elif LANGUAGE_CODE == 'fr' %}Français{% elif LANGUAGE_CODE == 'de' %}Deutsch{% elif LANGUAGE_CODE == 'nl' %}Nederlands{% else %}中文{% endif %}</a>
+            <dl class="layui-nav-child">
+                <dd><a href="/api/set_language?lang=en&next={{ request.get_full_path|urlencode }}">English</a></dd>
+                <dd><a href="/api/set_language?lang=es&next={{ request.get_full_path|urlencode }}">Español</a></dd>
+                <dd><a href="/api/set_language?lang=fr&next={{ request.get_full_path|urlencode }}">Français</a></dd>
+                <dd><a href="/api/set_language?lang=de&next={{ request.get_full_path|urlencode }}">Deutsch</a></dd>
+                <dd><a href="/api/set_language?lang=nl&next={{ request.get_full_path|urlencode }}">Nederlands</a></dd>
+                <dd><a href="/api/set_language?lang=zh-hans&next={{ request.get_full_path|urlencode }}">中文</a></dd>
+            </dl>
+        </li>
     </ul>
 
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">

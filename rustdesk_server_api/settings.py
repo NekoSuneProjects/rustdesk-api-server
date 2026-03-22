@@ -10,15 +10,58 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
+import socket
 from pathlib import Path
+from urllib.parse import urlsplit
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-if "CSRF_TRUSTED_ORIGINS" in os.environ:
-    CSRF_TRUSTED_ORIGINS = [os.environ["CSRF_TRUSTED_ORIGINS"]]
-else:
-    CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:21114"]
-    SECURE_CROSS_ORIGIN_OPENER_POLICY = 'None'
+
+
+def _normalize_trusted_origin(origin):
+    origin = origin.strip().rstrip('/')
+    if not origin:
+        return []
+    if '://' in origin:
+        return [origin]
+    return [f'http://{origin}', f'https://{origin}']
+
+
+def _build_csrf_trusted_origins():
+    origins = []
+    env_value = os.environ.get("CSRF_TRUSTED_ORIGINS", "")
+    for item in env_value.split(','):
+        origins.extend(_normalize_trusted_origin(item))
+
+    default_hosts = [
+        '127.0.0.1',
+        'localhost',
+        '127.0.0.1:21114',
+        'localhost:21114',
+    ]
+    for host in default_hosts:
+        origins.extend(_normalize_trusted_origin(host))
+
+    try:
+        local_ips = set(socket.gethostbyname_ex(socket.gethostname())[2])
+    except Exception:
+        local_ips = set()
+    for ip in local_ips:
+        origins.extend(_normalize_trusted_origin(ip))
+        origins.extend(_normalize_trusted_origin(f'{ip}:21114'))
+
+    id_server = os.environ.get("ID_SERVER", '').strip()
+    if id_server:
+        parsed = urlsplit(id_server if '://' in id_server else f'http://{id_server}')
+        host = parsed.netloc or parsed.path
+        origins.extend(_normalize_trusted_origin(host))
+
+    return sorted(set(origins))
+
+
+CSRF_TRUSTED_ORIGINS = _build_csrf_trusted_origins()
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'None'
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -166,7 +209,10 @@ else:
 LANGUAGES = (
     ('zh-hans', '中文简体'),
     ('en', 'English'),
-
+    ('es', 'Español'),
+    ('fr', 'Français'),
+    ('de', 'Deutsch'),
+    ('nl', 'Nederlands'),
 )
 
 LOCALE_PATHS = (
