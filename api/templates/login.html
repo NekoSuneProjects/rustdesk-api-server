@@ -3,6 +3,8 @@
 {% load my_filters %}
 <!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as AVAILABLE_LANGUAGES %}
+{% get_language_info_list for AVAILABLE_LANGUAGES as language_info_list %}
 <html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
@@ -15,17 +17,9 @@
 </head>
 <body>
 <div style="padding: 16px 24px 0; text-align: right;">
-    <a href="/api/set_language?lang=en&next={{ request.get_full_path|urlencode }}">English</a>
-    |
-    <a href="/api/set_language?lang=es&next={{ request.get_full_path|urlencode }}">Español</a>
-    |
-    <a href="/api/set_language?lang=fr&next={{ request.get_full_path|urlencode }}">Français</a>
-    |
-    <a href="/api/set_language?lang=de&next={{ request.get_full_path|urlencode }}">Deutsch</a>
-    |
-    <a href="/api/set_language?lang=nl&next={{ request.get_full_path|urlencode }}">Nederlands</a>
-    |
-    <a href="/api/set_language?lang=zh-hans&next={{ request.get_full_path|urlencode }}">中文</a>
+    {% for lang in language_info_list %}
+    <a href="/api/set_language?lang={{ lang.code }}&next={{ request.get_full_path|urlencode }}">{{ lang.name_local }}</a>{% if not forloop.last %} | {% endif %}
+    {% endfor %}
 </div>
  
 <div class="login-main">

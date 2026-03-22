@@ -566,3 +566,25 @@ msgstr "Los datos est?n vac?os."
 #: .\api\views_front.py:414
 msgid "UNKNOWN"
 msgstr "UNKNOWN"
+
+
+msgid "日志"
+msgstr "Registros"
+
+msgid "成功"
+msgstr "Correcto"
+
+msgid "错误"
+msgstr "Error"
+
+msgid "未登录"
+msgstr "Sin iniciar sesion"
+
+msgid "分享链接不存在或已失效。"
+msgstr "El enlace compartido no existe o ha caducado."
+
+msgid "咱就说，你不能把链接分享给自己吧？！"
+msgstr "No puedes compartir el enlace contigo mismo, verdad?!"
+
+msgid "已被成功获取。"
+msgstr "se obtuvo correctamente."

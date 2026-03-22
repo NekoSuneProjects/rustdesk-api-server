@@ -339,18 +339,18 @@ def share(request):
             title = '成功'
             if not sharelink:
                 title = '错误'
-                msg = f'链接{url}:<br>分享链接不存在或已失效。'
+                msg = f"{_('\u94fe\u63a5\u5730\u5740')}: {url}<br>{_('\u5206\u4eab\u94fe\u63a5\u4e0d\u5b58\u5728\u6216\u5df2\u5931\u6548\u3002')}"
             else:
                 sharelink = sharelink[0]
                 if str(request.user.id) == str(sharelink.uid):
                     title = '错误'
-                    msg = f'链接{url}:<br><br>咱就说，你不能把链接分享给自己吧？！'
+                    msg = f"{_('\u94fe\u63a5\u5730\u5740')}: {url}<br><br>{_('\u54b1\u5c31\u8bf4\uff0c\u4f60\u4e0d\u80fd\u628a\u94fe\u63a5\u5206\u4eab\u7ed9\u81ea\u5df1\u5427\uff1f\uff01')}"
                 else:
                     sharelink.is_used = True
                     sharelink.save()
                     peers = sharelink.peers
                     peers = peers.split(',')
-                    # 自己的peers若重叠，需要跳过
+                    # Skip peers the current user already has.
                     peers_self_ids = [x.rid for x in RustDeskPeer.objects.filter(Q(uid=request.user.id))]
                     peers_share = RustDeskPeer.objects.filter(Q(rid__in=peers) & Q(uid=sharelink.uid))
                     # peers_share_ids = [x.rid for x in peers_share]
@@ -361,11 +361,11 @@ def share(request):
                         # peer = RustDeskPeer.objects.get(rid=peer.rid)
                         peer_f = RustDeskPeer.objects.filter(Q(rid=peer.rid) & Q(uid=sharelink.uid))
                         if not peer_f:
-                            msg += f"{peer.rid}已存在,"
+                            msg += f"{peer.rid}\u5df2\u5b58\u5728,"
                             continue
 
                         if len(peer_f) > 1:
-                            msg += f'{peer.rid}存在多个,已经跳过。 '
+                            msg += f"{peer.rid}\u5b58\u5728\u591a\u4e2a,\u5df2\u7ecf\u8df3\u8fc7\u3002 "
                             continue
                         peer = peer_f[0]
                         peer.id = None
@@ -373,11 +373,10 @@ def share(request):
                         peer.save()
                         msg += f"{peer.rid},"
 
-                    msg += '已被成功获取。'
+                    msg += _('\u5df2\u88ab\u6210\u529f\u83b7\u53d6\u3002')
 
             title = _(title)
-            msg = _(msg)
-            return render(request, 'msg.html', {'title': msg, 'msg': msg})
+            return render(request, 'msg.html', {'title': title, 'msg': msg})
     else:
         data = request.POST.get('data', '[]')
 

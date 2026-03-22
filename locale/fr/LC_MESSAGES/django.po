@@ -566,3 +566,25 @@ msgstr "Les donn?es sont vides."
 #: .\api\views_front.py:414
 msgid "UNKNOWN"
 msgstr "UNKNOWN"
+
+
+msgid "日志"
+msgstr "Journaux"
+
+msgid "成功"
+msgstr "Succes"
+
+msgid "错误"
+msgstr "Erreur"
+
+msgid "未登录"
+msgstr "Non connecte"
+
+msgid "分享链接不存在或已失效。"
+msgstr "Le lien de partage n'existe pas ou a expire."
+
+msgid "咱就说，你不能把链接分享给自己吧？！"
+msgstr "Tu ne peux pas partager le lien avec toi-meme, quand meme ?!"
+
+msgid "已被成功获取。"
+msgstr "a bien ete recupere."

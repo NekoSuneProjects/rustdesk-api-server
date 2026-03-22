@@ -213,6 +213,18 @@ LANGUAGES = (
     ('fr', 'Français'),
     ('de', 'Deutsch'),
     ('nl', 'Nederlands'),
+    ('ru', 'Русский'),
+    ('pl', 'Polski'),
+    ('uk', 'Українська'),
+    ('ja', '日本語'),
+    ('hi', 'हिन्दी'),
+    ('ms', 'Bahasa Melayu'),
+    ('pt-br', 'Português (Brasil)'),
+    ('ko', '한국어'),
+    ('th', 'ไทย'),
+    ('vi', 'Tiếng Việt'),
+    ('id', 'Bahasa Indonesia'),
+    ('ar', 'العربية'),
 )
 
 LOCALE_PATHS = (

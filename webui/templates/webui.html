@@ -1,4 +1,4 @@
-{% load static %}<!DOCTYPE html>
+{% load static %}{% load i18n %}<!DOCTYPE html>
 <html>
 
 <head>
@@ -16,12 +16,53 @@
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
-  <title>RustDesk Web桌面</title>
+  <title>{% trans "RustDesk Web Desktop" %}</title>
   <link rel="manifest" href="{% static "/web_client/manifest.json" %}">
   <script src=></script>
   <script src="{% static "/web_client/ogvjs-1.8.6/ogv.js" %}"></script>
   <script>
       var api = ["{{domain}}"];
+  </script>
+  <script>
+    (function () {
+      function readCookie(name) {
+        var prefix = name + "=";
+        var parts = document.cookie ? document.cookie.split(";") : [];
+        for (var i = 0; i < parts.length; i++) {
+          var part = parts[i].trim();
+          if (part.indexOf(prefix) === 0) {
+            return decodeURIComponent(part.substring(prefix.length));
+          }
+        }
+        return "";
+      }
+
+      function normalizeLanguage(raw) {
+        if (!raw) return "en";
+        var value = String(raw).toLowerCase().replace(/_/g, "-");
+        if (value.indexOf("zh") === 0) {
+          return value.indexOf("tw") !== -1 || value.indexOf("hk") !== -1 ? "tw" : "cn";
+        }
+        if (value.indexOf("pt-br") === 0 || value === "pt") return "pt";
+        if (value.indexOf("fr") === 0) return "fr";
+        if (value.indexOf("de") === 0) return "de";
+        if (value.indexOf("ru") === 0) return "ru";
+        if (value.indexOf("it") === 0) return "it";
+        if (value.indexOf("eo") === 0) return "eo";
+        return "en";
+      }
+
+      var params = new URLSearchParams(window.location.search);
+      if (params.get("lang")) return;
+
+      var cookieLang = readCookie("django_language");
+      var browserLang = (navigator.languages && navigator.languages[0]) || navigator.language || "";
+      var resolved = normalizeLanguage(cookieLang || browserLang);
+      params.set("lang", resolved);
+
+      var next = window.location.pathname + "?" + params.toString() + window.location.hash;
+      window.location.replace(next);
+    })();
   </script>
   <script type="module" crossorigin src={% static "/web_client/module/index.b7bb6fa2.js" %}></script>
   

@@ -566,3 +566,25 @@ msgstr "Die Daten sind leer."
 #: .\api\views_front.py:414
 msgid "UNKNOWN"
 msgstr "UNKNOWN"
+
+
+msgid "日志"
+msgstr "Protokolle"
+
+msgid "成功"
+msgstr "Erfolg"
+
+msgid "错误"
+msgstr "Fehler"
+
+msgid "未登录"
+msgstr "Nicht angemeldet"
+
+msgid "分享链接不存在或已失效。"
+msgstr "Der Freigabelink existiert nicht oder ist abgelaufen."
+
+msgid "咱就说，你不能把链接分享给自己吧？！"
+msgstr "Du kannst den Link doch nicht mit dir selbst teilen, oder?!"
+
+msgid "已被成功获取。"
+msgstr "wurde erfolgreich uebernommen."

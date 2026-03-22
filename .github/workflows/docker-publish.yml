@@ -67,9 +67,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            chisdealhdyt/rustdesk-api-server:v1.5.3
             chisdealhdyt/rustdesk-api-server:latest
-            ghcr.io/nekosuneprojects/rustdesk-api-server:v1.5.3
             ghcr.io/nekosuneprojects/rustdesk-api-server:latest
           labels: ${{ steps.meta.outputs.labels }}
 

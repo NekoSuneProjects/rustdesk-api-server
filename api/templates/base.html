@@ -2,6 +2,8 @@
 {% load i18n %}
 <!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as AVAILABLE_LANGUAGES %}
+{% get_language_info_list for AVAILABLE_LANGUAGES as language_info_list %}
 <html lang="{{ LANGUAGE_CODE }}">
 
 <head>
@@ -49,14 +51,15 @@
         {% endif %}
         <li class="layui-nav-item"><a href="/api/user_action?action=logout" target="_blank">{% trans "退出" %}</a></li>
         <li class="layui-nav-item">
-            <a href="javascript:;">{% get_current_language as LANGUAGE_CODE %}{% if LANGUAGE_CODE == 'en' %}English{% elif LANGUAGE_CODE == 'es' %}Español{% elif LANGUAGE_CODE == 'fr' %}Français{% elif LANGUAGE_CODE == 'de' %}Deutsch{% elif LANGUAGE_CODE == 'nl' %}Nederlands{% else %}中文{% endif %}</a>
+            <a href="javascript:;">
+                {% for lang in language_info_list %}
+                {% if lang.code == LANGUAGE_CODE %}{{ lang.name_local }}{% endif %}
+                {% endfor %}
+            </a>
             <dl class="layui-nav-child">
-                <dd><a href="/api/set_language?lang=en&next={{ request.get_full_path|urlencode }}">English</a></dd>
-                <dd><a href="/api/set_language?lang=es&next={{ request.get_full_path|urlencode }}">Español</a></dd>
-                <dd><a href="/api/set_language?lang=fr&next={{ request.get_full_path|urlencode }}">Français</a></dd>
-                <dd><a href="/api/set_language?lang=de&next={{ request.get_full_path|urlencode }}">Deutsch</a></dd>
-                <dd><a href="/api/set_language?lang=nl&next={{ request.get_full_path|urlencode }}">Nederlands</a></dd>
-                <dd><a href="/api/set_language?lang=zh-hans&next={{ request.get_full_path|urlencode }}">中文</a></dd>
+                {% for lang in language_info_list %}
+                <dd><a href="/api/set_language?lang={{ lang.code }}&next={{ request.get_full_path|urlencode }}">{{ lang.name_local }}</a></dd>
+                {% endfor %}
             </dl>
         </li>
     </ul>
