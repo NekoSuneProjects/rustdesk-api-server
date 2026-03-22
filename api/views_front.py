@@ -336,15 +336,18 @@ def share(request):
             shash = url.split('/')[-1]
             sharelink = ShareLink.objects.filter(Q(shash=shash))
             msg = ''
-            title = '成功'
+            link_address_label = _('\u94fe\u63a5\u5730\u5740')
+            share_link_missing_msg = _('\u5206\u4eab\u94fe\u63a5\u4e0d\u5b58\u5728\u6216\u5df2\u5931\u6548\u3002')
+            self_share_msg = _('\u54b1\u5c31\u8bf4\uff0c\u4f60\u4e0d\u80fd\u628a\u94fe\u63a5\u5206\u4eab\u7ed9\u81ea\u5df1\u5427\uff1f\uff01')
+            title = '\u6210\u529f'
             if not sharelink:
-                title = '错误'
-                msg = f"{_('\u94fe\u63a5\u5730\u5740')}: {url}<br>{_('\u5206\u4eab\u94fe\u63a5\u4e0d\u5b58\u5728\u6216\u5df2\u5931\u6548\u3002')}"
+                title = '\u9519\u8bef'
+                msg = f"{link_address_label}: {url}<br>{share_link_missing_msg}"
             else:
                 sharelink = sharelink[0]
                 if str(request.user.id) == str(sharelink.uid):
-                    title = '错误'
-                    msg = f"{_('\u94fe\u63a5\u5730\u5740')}: {url}<br><br>{_('\u54b1\u5c31\u8bf4\uff0c\u4f60\u4e0d\u80fd\u628a\u94fe\u63a5\u5206\u4eab\u7ed9\u81ea\u5df1\u5427\uff1f\uff01')}"
+                    title = '\u9519\u8bef'
+                    msg = f"{link_address_label}: {url}<br><br>{self_share_msg}"
                 else:
                     sharelink.is_used = True
                     sharelink.save()
