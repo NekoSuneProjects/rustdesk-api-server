@@ -76,6 +76,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: ${{ env.IMAGE_NAME }}
+          repository: chisdealhdyt/rustdesk-api-server
           short-description: ${{ github.event.repository.description }}
           enable-url-completion: true
